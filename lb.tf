@@ -2,7 +2,7 @@ resource "aws_lb_target_group" "todo" {
     name = "todo"
     port = 6400
     protocol = "HTTP"
-    vpc_id = aws_security_group.todo.vpc_id
+    vpc_id = aws_security_group.taskoverflow_lb.vpc_id
     target_type = "ip"
     health_check {
         path = "/api/v1/health"
@@ -20,10 +20,10 @@ resource "aws_lb" "taskoverflow" {
     internal = false
     load_balancer_type = "application"
     subnets = data.aws_subnets.private.ids
-    security_groups = [aws_security_group.taskoverflow.id]
+    security_groups = [aws_security_group.taskoverflow_lb.id]
 }
 
-resource "aws_security_group" "taskoverflow" {
+resource "aws_security_group" "taskoverflow_lb" {
     name = "taskoverflow"
     description = "TaskOverflow Security Group"
     ingress {
